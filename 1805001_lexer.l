@@ -112,12 +112,6 @@ SingleQuot \'
     else fprintf(logFile,"%c already exists in the current scope table\n\n",yytext[1]);
 }
 
-{SingleQuot} {
-    //Empty character
-    errorCount++;
-    fprintf(logFile,"Error at line no %d: Empty character constant \n\n",lineCount);
-}
-
 [']\\[ntafrbv0\'\\]['] {
     //character constant
     char ch;
@@ -282,6 +276,13 @@ SingleQuot \'
     else if(yytext[1]=='\'')ch='\'';
     stringBody+=ch;
     logStringBody+=yytext;
+}
+
+<STRING><<EOF>> { 
+    errorCount++;
+    fprintf(logFile,"Error at line no %d: Unterminated String \"%s \n\n",lineCount,stringBody.c_str());
+    lineCount++;
+    BEGIN INITIAL; 
 }
 
 <COMMENT_SINGLE_LINE>[\n] {
