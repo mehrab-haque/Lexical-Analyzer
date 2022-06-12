@@ -242,7 +242,7 @@ SingleQuot \'
 }
 
 <STRING>[\"] {
-    fprintf(logFile,"Line no %d: Token <STRING> Lexeme \"%s\" found --> <STRING, %s> \n\n",tmpLineCount,logStringBody.c_str(),stringBody.c_str());
+    fprintf(logFile,"Line no %d: Token <STRING> Lexeme \"%s\" found --> <STRING, \"%s\"> \n\n",tmpLineCount,logStringBody.c_str(),stringBody.c_str());
     fprintf(tokenFile,"<STRING, %s> ",stringBody.c_str());
     BEGIN INITIAL; 
 }
@@ -254,7 +254,10 @@ SingleQuot \'
     BEGIN INITIAL; 
 }
 
-
+<STRING>\\\" {
+    stringBody+="\"";
+    logStringBody+=yytext;
+}
 
 <STRING>. {
     stringBody+=yytext;
