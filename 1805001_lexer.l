@@ -91,15 +91,15 @@ SingleQuot \'
 }
 
 \'\' {
-    //Emply character constant error
+    //Empty character constant error
     errorCount++;
     fprintf(logFile,"Error at line no %d: Empty character \n\n",lineCount);
 }
 
-\'\\\'|\'.|\'\\[ntafrbv0\'\\] {
+\'\\\'|\'.|\'\\[ntafrbv0\'\\]|\' {
     //Unfinished character
     errorCount++;
-    fprintf(logFile,"Error at line no %d: Unfinished character : %s \n\n",lineCount,yytext);
+    fprintf(logFile,"Error at line no %d: Unterminated character : %s \n\n",lineCount,yytext);
 }
 
 
@@ -249,7 +249,7 @@ SingleQuot \'
 
 <STRING>[\n] {
     errorCount++;
-    fprintf(logFile,"Error at line no %d: Unterminated String \"%s \n\n",lineCount,stringBody.c_str());
+    fprintf(logFile,"Error at line no %d: Unterminated String \"%s \n\n",lineCount,logStringBody.c_str());
     lineCount++;
     BEGIN INITIAL; 
 }
@@ -280,7 +280,7 @@ SingleQuot \'
 
 <STRING><<EOF>> { 
     errorCount++;
-    fprintf(logFile,"Error at line no %d: Unterminated String \"%s \n\n",lineCount,stringBody.c_str());
+    fprintf(logFile,"Error at line no %d: Unterminated String \"%s \n\n",lineCount,logStringBody.c_str());
     lineCount++;
     BEGIN INITIAL; 
 }

@@ -62,7 +62,7 @@ string SymbolTable::getCurrentScopeId(){
 string SymbolTable::printScopesRecursively(ScopeTable *scope){
 	printStream<<scope->print();
 	if(scope->getParentScope()!=NULL)
-		printStream<<this->printScopesRecursively(scope->getParentScope());
+		this->printScopesRecursively(scope->getParentScope());
 	return printStream.str();
 }
 
